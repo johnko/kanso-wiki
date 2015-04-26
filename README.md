@@ -12,7 +12,7 @@ sh deploy.sh
 
 The app will be deployed to:
 
-http://localhost:5984/tapir/_design/tapir/index.html
+http://localhost:5984/tapirwiki/_design/tapirwiki/index.html
 
 ## Development
 

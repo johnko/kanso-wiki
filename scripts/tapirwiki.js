@@ -577,7 +577,7 @@ $(document).ready(function() {
                 $("#container").html("<h1>Installing TapirWiki</h1><p>Before you use TapirWiki for the first time, a few default pages need to be loaded:</p><ul id='install-log'></ul><div id='install-result'></div>");
                 $.ajax({
                     type: 'GET',
-                    url: '_show/systempages/_design%2Ftapir',
+                    url: '_show/systempages/_design%2Ftapirwiki',
                     async: false,
                     success: function(data) {
                         var pages = JSON.parse(data);
