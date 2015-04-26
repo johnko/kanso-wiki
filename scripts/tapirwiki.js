@@ -4,12 +4,15 @@
 */
 
 // JV: make the functions needed for rendering
-textileparser = makeTextileParser();
+var md = require('lib/markdown-it')({
+    html: true,
+    linkify: true,
+    typographer: true
+});
 tapirparseandreplace = maketapirwikiparseandreplace();
-htmlrenderer = makehtmlrenderer();
 
 function convert(text) {
-    return htmlrenderer(tapirparseandreplace(textileparser(text)));
+    return md.render(tapirparseandreplace(text));
 }
 
 String.prototype.toCamelCase = function() {
