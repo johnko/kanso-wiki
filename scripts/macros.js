@@ -37,10 +37,10 @@ function maketapirwikiparseandreplace() {
             }
         });
 
-        var html = "";
+        var html = "Title | Last edited on | By\n---|---|---\n";
         for (var x = 0; x < pages.total_rows; x++) {
             var p = pages.rows[x];
-            html += "* [" + p.id + "](#" + p.id + ") edited on " + p.value.edited_on + " by " + p.value.edited_by + "\n";
+            html += "[" + p.id + "](#" + p.id + ") | " + p.value.edited_on + " | " + p.value.edited_by + "\n";
         }
         return html;
     }
@@ -74,14 +74,14 @@ function maketapirwikiparseandreplace() {
         });
 
 
-        var html = "";
+        var html = "Title | Last edited on | By\n---|---|---\n";
         var recentPages = 5;
         if (pages.rows.lenght < recentPages) {
             recentPages = pages.rows.length;
         }
         for (var x = 0; x < recentPages; x++) {
             var p = pages.rows[x];
-            html += "* [" + p.id + "](#" + p.id + ") edited on " + p.value.edited_on + " by " + p.value.edited_by + "\n";
+            html += "[" + p.id + "](#" + p.id + ") | " + p.value.edited_on + " | " + p.value.edited_by + "\n";
         }
         return html;
     }
@@ -106,11 +106,11 @@ function maketapirwikiparseandreplace() {
             }
         });
 
-        var html = "";
+        var html = "Title | Last edited on | By\n---|---|---\n";
         for (var x = 0; x < pages.total_rows; x++) {
             var p = pages.rows[x];
             if (p.id.substring(title.length, 0) == title) {
-                html += "* [" + p.id + "](#" + p.id + ") edited on " + p.value.edited_on + " by " + p.value.edited_by + "\n";
+                html += "[" + p.id + "](#" + p.id + ") | " + p.value.edited_on + " | " + p.value.edited_by + "\n";
             }
         }
         return html;
