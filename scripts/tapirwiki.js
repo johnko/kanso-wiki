@@ -392,6 +392,9 @@ wiki.attachments = function() {
                     if (xhr.readyState == 4) {
                         if (xhr.status == 201) {
                             wiki.open(wiki._id);
+                            $.jGrowl("Attachment was uploaded...", {
+                                header: "Cool!"
+                            });
                         } else {
                             error("Ooooops!, request failed with status: " + xhr.status + ' ' + xhr.responseText);
                         }
