@@ -57,8 +57,16 @@ wiki.save = function() {
         error("Please enter a page title!");
     } else {
         wiki.body = $("#body").val();
-        wiki.edited_by = Cookies.get("userName");
         wiki.edited_on = Date();
+
+        $.ajax({
+            url: '../../../_session',
+            async: false,
+            success: function(data) {
+                var response = JSON.parse(data);
+                wiki.edited_by = response.userCtx.name;
+            }
+        });
 
         $.ajax({
             type: 'put',
@@ -402,12 +410,18 @@ wiki.attachments = function() {
 
 //Finally, some miscellaneous useful functions
 function identify() {
-    var name = prompt("Please enter your name", Cookies.get("userName"));
-    if (name !== null && name !== "") {
-        Cookies.set("userName", name, {
-            expires: 7
+    if ($("#userName").html().replace(" ", "").length < 1) {
+        $("#LoginForm").show();
+    } else {
+        $.ajax({
+            type: 'delete',
+            url: '../../../_session',
+            async: false,
+            success: function(data) {
+                $("#userName").html('');
+                $("#LoginForm").show();
+            }
         });
-        $("#userName").html(name);
     }
 }
 
@@ -540,6 +554,32 @@ function topicList(title) {
 
 $(document).ready(function() {
 
+    $("#LoginButton").on('click', function() {
+        $.ajax({
+            type: 'post',
+            url: '../../../_session',
+            data: {
+                'name': $("#LoginName").val(),
+                'password': $("#LoginPassword").val()
+            },
+            async: false,
+            success: function(data2) {
+                $("#LoginForm").hide();
+                $.ajax({
+                    url: '../../../_session',
+                    async: false,
+                    success: function(data) {
+                        var response = JSON.parse(data);
+                        $("#userName").html('Signed in as ' + response.userCtx.name);
+                    }
+                });
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                error("Ooooops!, request failed with status: " + XMLHttpRequest.status + ' ' + XMLHttpRequest.responseText);
+            }
+        });
+    });
+
     //To start, we need the settings for the wiki...
     $.ajax({
         type: 'get',
@@ -573,14 +613,16 @@ $(document).ready(function() {
             //Now let's open the page
             wiki.open(requestedPage);
 
-            //And now, set the user name. This is stored in a cookie, it's in no way an authentication system, just lets people tag their updates...
-            var userName = Cookies.get("userName");
-            if (userName === null) {
-                //If there is no cookie set, get the default from the settings
-                userName = settings.defaultUserName;
-                Cookies.set("userName", userName);
-            }
-            $('#userName').html(userName);
+            //And now, set the user name.
+            var userName = settings.defaultUserName;
+            $.ajax({
+                url: '../../../_session',
+                async: false,
+                success: function(data) {
+                    var response = JSON.parse(data);
+                    $("#userName").html('Signed in as ' + response.userCtx.name);
+                }
+            });
 
         },
 
