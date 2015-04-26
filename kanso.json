@@ -1,6 +1,6 @@
 {
     "name": "tapirwiki",
-    "version": "0.5.0",
+    "version": "0.6.0",
     "description": "A Wiki on the Couch!",
     "attachments": ["index.html", "scripts", "style"],
     "load": "app",
