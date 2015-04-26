@@ -26,7 +26,7 @@ kanso upload data http://localhost:5984/tapir
 
 #### 4. The app will be deployed to:
 
-http://localhost:5984/example/_design/example-app/index.html
+http://localhost:5984/tapir/_design/tapir/wiki.html
 
 ## Development
 
