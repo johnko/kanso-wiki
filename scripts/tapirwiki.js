@@ -571,6 +571,7 @@ $(document).ready(function() {
                     success: function(data) {
                         var response = JSON.parse(data);
                         if (response.userCtx.name !== null) $("#userName").html('Signed in as ' + response.userCtx.name);
+                        else $("#LoginForm").show();
                     }
                 });
             },
@@ -621,6 +622,7 @@ $(document).ready(function() {
                 success: function(data) {
                     var response = JSON.parse(data);
                     if (response.userCtx.name !== null) $("#userName").html('Signed in as ' + response.userCtx.name);
+                    else $("#LoginForm").show();
                 }
             });
 
