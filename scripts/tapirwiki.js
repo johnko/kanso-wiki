@@ -570,7 +570,7 @@ $(document).ready(function() {
                     async: false,
                     success: function(data) {
                         var response = JSON.parse(data);
-                        $("#userName").html('Signed in as ' + response.userCtx.name);
+                        if (response.userCtx.name !== null) $("#userName").html('Signed in as ' + response.userCtx.name);
                     }
                 });
             },
@@ -620,7 +620,7 @@ $(document).ready(function() {
                 async: false,
                 success: function(data) {
                     var response = JSON.parse(data);
-                    $("#userName").html('Signed in as ' + response.userCtx.name);
+                    if (response.userCtx.name !== null) $("#userName").html('Signed in as ' + response.userCtx.name);
                 }
             });
 
