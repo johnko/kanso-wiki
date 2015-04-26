@@ -3,7 +3,7 @@ function maketapirwikiparseandreplace() {
     var pageContent = "";
 
     function includePage(id) {
-        //console.log('includePage(' + id + ')');
+        console.log('includePage(' + id + ')');
         $.ajax({
             type: 'get',
             url: '../../' + id,
@@ -14,7 +14,7 @@ function maketapirwikiparseandreplace() {
             },
 
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-                pageContent = "INCLUDE ERROR: [" + id + "](#" + id + ") does not exist yet...";
+                pageContent = "\n\n***INCLUDE ERROR: [" + id + "](#" + id + ") does not exist yet...***";
             }
         });
         return pageContent;
@@ -143,16 +143,14 @@ function maketapirwikiparseandreplace() {
         //console.log(topicMatches);
         for (match in topicMatches) {
             var stripped = topicMatches[match].replace(/^\{topic:/, "").replace(/\}$/, "");
-            var topicResult = tokens.topicMacro.sub(stripped);
-            text = text.replace(tokens.topicMacro.re, topicResult);
+            text = text.replace(topicMatches[match], tokens.topicMacro.sub(stripped));
         }
         text = text.replace(tokens.recentChangesMacro.re, tokens.recentChangesMacro.sub());
         var includeMatches = text.match(tokens.includeMacro.re);
         //console.log(includeMatches);
         for (match in includeMatches) {
             var stripped2 = includeMatches[match].replace(/^\{include:/, "").replace(/\}$/, "");
-            var includeResult = tokens.includeMacro.sub(stripped2);
-            text = text.replace(tokens.includeMacro.re, includeResult);
+            text = text.replace(includeMatches[match], tokens.includeMacro.sub(stripped2));
         }
         return text;
         // end parseandreplace()

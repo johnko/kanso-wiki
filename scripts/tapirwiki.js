@@ -4,11 +4,19 @@
 */
 
 // JV: make the functions needed for rendering
-var md = require('lib/markdown-it')({
-    html: true,
-    linkify: true,
-    typographer: true
-});
+var md = require('lib/markdown-it.min')({
+        html: true,
+        linkify: true,
+        typographer: true
+    }).use(require('lib/markdown-it-abbr.min'))
+    .use(require('lib/markdown-it-container.min'), 'warning')
+    .use(require('lib/markdown-it-deflist.min'))
+    .use(require('lib/markdown-it-emoji.min'))
+    .use(require('lib/markdown-it-footnote.min'))
+    .use(require('lib/markdown-it-ins.min'))
+    .use(require('lib/markdown-it-mark.min'))
+    .use(require('lib/markdown-it-sub.min'))
+    .use(require('lib/markdown-it-sup.min'));
 tapirparseandreplace = maketapirwikiparseandreplace();
 
 function convert(text) {
