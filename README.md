@@ -6,25 +6,11 @@ Original source: https://code.google.com/p/tapirwiki
 
 ## Deployment
 
-#### 1. Get the dependencies before pushing:
-
 ```
-kanso install
+sh deploy.sh
 ```
 
-#### 2. Push the app to a couchdb database named tapir:
-
-```
-kanso push http://localhost:5984/tapir
-```
-
-#### 3. Upload the initial wiki data documents:
-
-```
-kanso upload data http://localhost:5984/tapir
-```
-
-#### 4. The app will be deployed to:
+The app will be deployed to:
 
 http://localhost:5984/tapir/_design/tapir/index.html
 
