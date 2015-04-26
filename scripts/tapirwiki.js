@@ -57,7 +57,7 @@ wiki.save = function() {
         error("Please enter a page title!");
     } else {
         wiki.body = $("#body").val();
-        wiki.edited_by = $.cookie("userName");
+        wiki.edited_by = Cookies.get("userName");
         wiki.edited_on = Date();
 
         $.ajax({
@@ -87,10 +87,10 @@ wiki.display = function() {
     n.fadeIn("fast");
     $("#pageTitle").html(this._id);
     $("#page-menu").html("");
-    $("<li class='pageSpecific'><a href='Javascript: wiki.edit()'>Edit</a></li>").appendTo("#page-menu");
-    $("<li class='pageSpecific'><a href='Javascript: wiki.history()'>History</a></li>").appendTo("#page-menu");
-    $("<li class='pageSpecific'><a href='Javascript: wiki.attachments()'>Attachments</a></li>").appendTo("#page-menu");
-    $("<li class='pageSpecific'><a href='Javascript: wiki.remove()'>Delete</a></li>").appendTo("#page-menu");
+    $('<li class="pageSpecific"><a href="Javascript: wiki.edit()">Edit</a></li>').appendTo("#page-menu");
+    $('<li class="pageSpecific"><a href="Javascript: wiki.history()">History</a></li>').appendTo("#page-menu");
+    $('<li class="pageSpecific"><a href="Javascript: wiki.attachments()">Attachments</a></li>').appendTo("#page-menu");
+    $('<li class="pageSpecific"><a href="Javascript: wiki.remove()">Delete</a></li>').appendTo("#page-menu");
     window.location = "index.html#" + this._id;
     $.tapirWiki.pageChangeReset(this._id);
 };
@@ -157,11 +157,11 @@ wiki.edit = function() {
 
     if (wiki._rev) {
         //if there is a revision, it is an existing page and the title should be displayed read only
-        $("<p id='title'>" + this._id + "</p>").appendTo(form);
+        $("<h1 id='title'>" + this._id + "</h1>").appendTo(form);
     } else {
         //if no revision, it's a new page and we should let the user enter a page name
 
-        $("<p><input id='title' type='text' value='" + this._id + "'/></p>").appendTo(form);
+        $("<h1><input id='title' type='text' value='" + this._id + "'/></h1>").appendTo(form);
         $("#title").focus();
 
         $("#title").blur(function() {
@@ -215,7 +215,7 @@ wiki.edit = function() {
     $("<p><textarea id='body'>" + this.body + "</textarea></p>").appendTo(form);
 
     $("#page-menu").html("");
-    $("<li><a href='Javascript: wiki.save();'>Save</a></li>").appendTo("#page-menu").fadeIn("slow");
+    $('<li><a href="Javascript: wiki.save();">Save</a></li>').appendTo("#page-menu").fadeIn("slow");
     $("#pageTitle").html("New page");
 };
 
@@ -315,7 +315,7 @@ wiki.history = function() {
 
         wiki.previousVersions[oldPages[page]._rev] = oldPages[page];
 
-        $('<li>' + event + ' on ' + oldPages[page].edited_on + ' by ' + oldPages[page].edited_by + '<a id="' + oldPages[page]._rev + '"> View</a></li>').appendTo('#history');
+        $('<li>' + event + ' on ' + oldPages[page].edited_on + ' by ' + oldPages[page].edited_by + ' <a class="btn btn-default" id="' + oldPages[page]._rev + '"> View</a></li>').appendTo('#history');
         $('#' + oldPages[page]._rev).click(function() {
             wiki.body = wiki.previousVersions[this.id].body;
             wiki.display();
@@ -373,23 +373,26 @@ wiki.load = function() {
 wiki.attachments = function() {
     $('#page-body').html('<h2>Attachments</h2><ul id="attachment-list"></ul><div id="upload-form-holder"></div>').hide().fadeIn("slow");
 
-    $("<h3>New attachment</h3><form id='attachment-form' method='post' action='' content-type='multipart/form-data'><input id='_attachments' type='file' name='_attachments'/><input type='hidden' name='_rev' value='" + wiki._rev + "'/></form><button id='upload-button'>Upload File</button>").appendTo('#page-body');
-    $("#attachment-form").ajaxForm(function() {
-        error("Thank you for your comment!");
-    });
-
-    var options = {
-        target: '',
-        url: "../../" + wiki._id,
-        type: "post",
-        async: false,
-        success: function(data) {
-            wiki.open(wiki._id);
-        }
-    };
+    $("<h3>New attachment</h3><input id='_attachments' type='file' name='_attachments'/><button class='btn btn-primary' id='upload-button'>Upload File</button>").appendTo('#page-body');
 
     $("#upload-button").click(function() {
-        $("#attachment-form").ajaxSubmit(options);
+        $.each($('#_attachments')[0].files, function(index, file) {
+            if (file instanceof Blob) {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function(e) {
+                    if (xhr.readyState == 4) {
+                        if (xhr.status == 201) {
+                            wiki.open(wiki._id);
+                        } else {
+                            error("Ooooops!, request failed with status: " + xhr.status + ' ' + xhr.responseText);
+                        }
+                    }
+                };
+                xhr.open("PUT", "../../" + wiki._id + "/" + file.name + "?rev=" + wiki._rev, true);
+                //xhr.setRequestHeader("X_FILENAME", file.name);
+                xhr.send(file);
+            }
+        });
     });
 
     for (f in wiki._attachments) {
@@ -399,9 +402,9 @@ wiki.attachments = function() {
 
 //Finally, some miscellaneous useful functions
 function identify() {
-    var name = prompt("Please enter your name", $.cookie("userName"));
+    var name = prompt("Please enter your name", Cookies.get("userName"));
     if (name !== null && name !== "") {
-        $.cookie("userName", name, {
+        Cookies.set("userName", name, {
             expires: 7
         });
         $("#userName").html(name);
@@ -427,7 +430,7 @@ function includePage(id) {
         },
 
         error: function(XMLHttpRequest, textStatus, errorThrown) {
-            pageContent = "INCLUDE ERROR: <a href='Javascript: wiki.open(\"" + id + "\")'>" + id + "</a> does not exist yet...";
+            pageContent = "***INCLUDE ERROR: <a href='Javascript: wiki.open(\"" + id + "\")'>" + id + "</a> does not exist yet...***";
         }
     });
     return pageContent;
@@ -515,7 +518,7 @@ function topicList(title) {
         },
 
         error: function(XMLHttpRequest, textStatus, errorThrown) {
-            pageContent = "INCLUDE ERROR: <a href='Javascript: wiki.open(\"" + id + "\")'>" + id + "</a> does not exist yet...";
+            pageContent = "***INCLUDE ERROR: <a href='Javascript: wiki.open(\"" + id + "\")'>" + id + "</a> does not exist yet...***";
         }
     });
 
@@ -571,11 +574,11 @@ $(document).ready(function() {
             wiki.open(requestedPage);
 
             //And now, set the user name. This is stored in a cookie, it's in no way an authentication system, just lets people tag their updates...
-            var userName = $.cookie("userName");
+            var userName = Cookies.get("userName");
             if (userName === null) {
                 //If there is no cookie set, get the default from the settings
                 userName = settings.defaultUserName;
-                $.cookie("userName", userName);
+                Cookies.set("userName", userName);
             }
             $('#userName').html(userName);
 

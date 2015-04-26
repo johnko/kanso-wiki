@@ -4,11 +4,12 @@
 <head>
     <link rel="stylesheet" href="style/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="style/tapirwiki.css" type="text/css">
-    <script src="scripts/jQuery.js"></script>
+    <script src="scripts/jquery-1.11.2.min.js"></script>
+    <script src="scripts/js.cookie-1.5.1.min.js"></script>
+    <script src="scripts/jquery.jgrowl.min.js"></script>
     <script src="scripts/jquery.tapirwiki.js"></script>
     <script src="scripts/json2.js"></script>
-    <script src="scripts/parser.js"></script>
-    <script src="scripts/renderer.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
     <script src="scripts/macros.js"></script>
     <script src="modules.js"></script>
     <script src="scripts/tapirwiki.js"></script>
@@ -19,30 +20,44 @@
 <body>
     <div id="container">
         <div id="wrapper">
-            <div id="header">
-                <h1 id="header-title">
-                    <span id="wikiName"></span>::
-                    <span id="pageTitle"></span>
-                </h1>
-                <p>You are
-                    <span id="userName" onclick="javascript: identify();"></span>
-                </p>
-                <div style="clear:both"></div>
-            </div>
-            <div id="navigation">
-                <ul id="main-menu"></ul>
-                <ul id="page-menu"></ul>
-                <div style="clear:both"></div>
-            </div>
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <!--a class="navbar-brand" href="#">Brand</a-->
+                        <a class="navbar-brand" href="#">
+                            <span id="wikiName"></span>
+                            :
+                            <span id="pageTitle"></span>
+                        </a>
+                    </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul id="main-menu" class="nav navbar-nav">
+                            <li class="hidden-xs nav-spacer"></li>
+                        </ul>
+                        <p class="navbar-text navbar-right">You are
+                            <a id="userName" class="navbar-link" onclick="javascript: identify();"></a>
+                        </p>
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </div>
+            </nav>
+            <ul id="page-menu" class="nav nav-pills"></ul>
             <div id="content">
                 <div id="inner-content">
                     <p>Loading...</p>
                 </div>
             </div>
         </div>
-        <div id="footer">
-            <p>Powered by <a href="https://github.com/johnko/tapirwiki">TapirWiki</a>. Find a tapir and love it!</p>
-        </div>
+        <footer>
+            <p>Powered by <a href="https://github.com/johnko/tapirwiki">TapirWiki</a>.</p>
+        </footer>
     </div>
 </body>
 
