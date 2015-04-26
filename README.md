@@ -36,3 +36,11 @@ http://localhost:5984/example/_design/example-app/index.html
 ```
 sudo npm install -g kanso
 ```
+
+## LICENSE
+
+MIT License
+
+Copyright (c) 2010 Joshua.e.Knight
+
+Copyright (c) 2015 John Ko
