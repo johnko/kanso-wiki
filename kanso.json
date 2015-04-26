@@ -2,7 +2,7 @@
     "name": "tapir",
     "version": "0.5.0",
     "description": "A Wiki on the Couch!",
-    "attachments": ["wiki.html", "scripts", "style"],
+    "attachments": ["index.html", "scripts", "style"],
     "load": "app",
     "modules": ["app.js", "lib"],
     "dependencies": {

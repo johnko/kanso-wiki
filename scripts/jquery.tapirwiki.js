@@ -113,7 +113,7 @@
     //  };
 
     function goPath(newPath) {
-        window.location = 'wiki.html#' + newPath;
+        window.location = 'index.html#' + newPath;
         _lastPath = getPath();
     }
 

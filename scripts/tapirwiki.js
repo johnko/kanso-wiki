@@ -80,7 +80,7 @@ wiki.display = function() {
     $("<li class='pageSpecific'><a href='Javascript: wiki.history()'>History</a></li>").appendTo("#page-menu");
     $("<li class='pageSpecific'><a href='Javascript: wiki.attachments()'>Attachments</a></li>").appendTo("#page-menu");
     $("<li class='pageSpecific'><a href='Javascript: wiki.remove()'>Delete</a></li>").appendTo("#page-menu");
-    window.location = "wiki.html#" + this._id;
+    window.location = "index.html#" + this._id;
     $.tapirWiki.pageChangeReset(this._id);
 };
 
@@ -584,7 +584,7 @@ $(document).ready(function() {
                         for (p in pages) {
                             pop(pages[p]);
                         }
-                        $("#install-result").html("<h2>Installation complete</h2><p>Congratulations, TapirWiki has been set up correctly. Please refresh this page to access your new wiki or click <a href='./wiki.html'>here</a>.</p>");
+                        $("#install-result").html("<h2>Installation complete</h2><p>Congratulations, TapirWiki has been set up correctly. Please refresh this page to access your new wiki or click <a href='./index.html'>here</a>.</p>");
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         error("Ooooops!, request failed with status: " + XMLHttpRequest.status + ' ' + XMLHttpRequest.responseText);
