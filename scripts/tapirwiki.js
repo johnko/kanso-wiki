@@ -58,13 +58,14 @@ wiki.save = function() {
     } else {
         wiki.body = $("#body").val();
         wiki.edited_on = Date();
+        wiki.edited_by = settings.defaultUserName;
 
         $.ajax({
             url: '../../../_session',
             async: false,
             success: function(data) {
                 var response = JSON.parse(data);
-                wiki.edited_by = response.userCtx.name;
+                if (response.userCtx.name !== null) wiki.edited_by = response.userCtx.name;
             }
         });
 
