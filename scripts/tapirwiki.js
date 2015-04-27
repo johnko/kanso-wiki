@@ -23,6 +23,10 @@ function convert(text) {
     return md.render(tapirparseandreplace(text));
 }
 
+function clearPreview() {
+    $("#md-preview").html('');
+}
+
 String.prototype.toCamelCase = function() {
     return this.toString()
         .replace(/([A-Z]+)/g, function(m, l) {
@@ -127,6 +131,7 @@ wiki.display = function() {
 };
 
 wiki.init = function() {
+    clearPreview();
     wiki._id = "";
     delete wiki._rev;
     delete wiki._revisions;
@@ -185,6 +190,7 @@ wiki.edit = function() {
     $("<h2>" + this._id + "</h2>");
 
     var form = $("<form id='addNote'></form>").hide().appendTo("#inner-content").fadeIn("slow");
+    $('<div id="md-preview"></div>').appendTo("#content");
 
     if (wiki._rev) {
         //if there is a revision, it is an existing page and the title should be displayed read only
@@ -243,7 +249,11 @@ wiki.edit = function() {
         }
 
     }
-    $("<p><textarea id='body'>" + this.body + "</textarea></p>").appendTo(form);
+    $("#md-preview").html('<h1>Live Preview</h1>' + convert(this.body));
+    $("<textarea id='body'>" + this.body + "</textarea>").on('mouseup keyup', function(e) {
+        $("#md-preview").html('<h1>Live Preview</h1>' + convert($("#body").val()));
+    }).appendTo(form);
+
 
     $("#page-menu").html("");
     $('<li><a href="Javascript: wiki.save();">Save</a></li>').appendTo("#page-menu").fadeIn("slow");

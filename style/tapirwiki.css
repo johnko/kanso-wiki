@@ -17,6 +17,25 @@ body {
 #content input {
     width: 100%;
 }
+@media (max-width: 991px) {
+    #inner-content {
+        width: inherit;
+    }
+    #md-preview {
+        display: none;
+    }
+}
+@media (min-width: 992px) {
+    #inner-content {
+        width: 49%;
+        float: left;
+    }
+    #md-preview {
+        display: block;
+        width: 49%;
+        float: right;
+    }
+}
 /*
 table from bootstrap because we can't set class in markdown
 */

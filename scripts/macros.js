@@ -20,6 +20,7 @@ function maketapirwikiparseandreplace() {
             }
         });
     }
+    refreshViewPages();
 
     function includePage(id) {
         //console.log('includePage(' + id + ')');
@@ -127,7 +128,10 @@ function maketapirwikiparseandreplace() {
 
 
     function parseandreplace(text) {
-        refreshViewPages();
+
+        // maybe shouldn't refresh all the time?
+        //refreshViewPages();
+
         text = text.replace(tokens.indexMacro.re, tokens.indexMacro.sub());
         var topicMatches = text.match(tokens.topicMacro.re);
         //console.log(topicMatches);
