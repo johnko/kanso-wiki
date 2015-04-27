@@ -75,8 +75,9 @@ wiki.type = "page";
 
 wiki.save = function() {
 
-    if (wiki._rev === null) {
+    if (wiki._rev === null || wiki._rev === "" || wiki._rev === undefined) {
         wiki._id = $("#title").val();
+        //console.log('wiki._id: ' + wiki._id);
     }
 
     if (wiki._id === "") {
@@ -197,7 +198,7 @@ wiki.edit = function() {
         //if no revision, it's a new page and we should let the user enter a page name
         $("#pageTitle").html("New page");
 
-        $("<h1><input id='title' type='text' value='" + this._id + "'/></h1>").appendTo(form);
+        $("<h1><input id='title' type='text' /></h1>").appendTo(form);
         $("#title").focus();
 
         $("#title").blur(function() {
@@ -655,7 +656,7 @@ $(document).ready(function() {
             }
 
             //and if replication is enabled show the sync menu item
-            if (settings.replicationEnabled && location.toString().match(settings.replicationEndPoint) === null) {
+            if (settings.replicationEnabled && location.toString().match(settings.replicationEndPoint).length < 1) {
                 $("<li><a href='#' onClick='Javascript: wiki.sync()'>Synchronise</a></li>").appendTo("#main-menu");
             }
 
