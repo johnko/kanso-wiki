@@ -34,22 +34,22 @@ String.prototype.toCamelCase = function() {
 };
 
 function timeLongFormatDate(timeString) {
-        var localdate = new Date(Date.parse(timeString));
-        var year = localdate.getFullYear();
-        var month = (
-            localdate.getMonth() < 9
-        ) ? '0' + (localdate.getMonth() + 1) : (localdate.getMonth() + 1);
-        var day = (
-            localdate.getDate() < 10
-        ) ? '0' + localdate.getDate() : localdate.getDate();
-        return year + '-' + month + '-' + day;
-    }
-    /*============================================================================*/
+    var localdate = new Date(Date.parse(timeString));
+    var year = localdate.getFullYear();
+    var month = (
+        localdate.getMonth() < 9
+    ) ? '0' + (localdate.getMonth() + 1) : (localdate.getMonth() + 1);
+    var day = (
+        localdate.getDate() < 10
+    ) ? '0' + localdate.getDate() : localdate.getDate();
+    return year + '-' + month + '-' + day;
+}
+
 function timeLongFormatTime(timeString) {
-        var localdate = new Date(Date.parse(timeString));
-        return localdate.toLocaleTimeString();
-    }
-    /*============================================================================*/
+    var localdate = new Date(Date.parse(timeString));
+    return localdate.toTimeString()();
+}
+
 function timeLongFormat(timeString) {
     return timeLongFormatDate(timeString) + ' ' +
         timeLongFormatTime(timeString);
