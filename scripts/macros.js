@@ -1,6 +1,25 @@
 function maketapirwikiparseandreplace() {
     // all the macros should either appear here or be imported here
     var pageContent = "";
+    var viewpages = {
+        total_rows: 0,
+        rows: []
+    };
+
+    function refreshViewPages() {
+        $.ajax({
+            type: 'get',
+            url: '_view/pages',
+            async: false,
+            success: function(data) {
+                var results = JSON.parse(data);
+                viewpages = results;
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                pageContent = "Error!";
+            }
+        });
+    }
 
     function includePage(id) {
         //console.log('includePage(' + id + ')');
@@ -22,25 +41,15 @@ function maketapirwikiparseandreplace() {
 
     function index() {
         //console.log('index()');
-        var pages;
+        var pages = viewpages;
 
-        $.ajax({
-            type: 'get',
-            url: '_view/pages',
-            async: false,
-            success: function(data) {
-                var results = JSON.parse(data);
-                pages = results;
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                pageContent = "Error!";
+        var html = "";
+        if (pages.total_rows > 0) {
+            html += "Title | Last edited on | By\n---|---|---\n";
+            for (var x = 0; x < pages.total_rows; x++) {
+                var p = pages.rows[x];
+                html += "[" + p.id + "](#" + p.id + ") | " + p.value.edited_on + " | " + p.value.edited_by + "\n";
             }
-        });
-
-        var html = "Title | Last edited on | By\n---|---|---\n";
-        for (var x = 0; x < pages.total_rows; x++) {
-            var p = pages.rows[x];
-            html += "[" + p.id + "](#" + p.id + ") | " + p.value.edited_on + " | " + p.value.edited_by + "\n";
         }
         return html;
     }
@@ -48,20 +57,7 @@ function maketapirwikiparseandreplace() {
 
     function recentChanges() {
         //console.log('recentChanges()');
-        var pages;
-
-        $.ajax({
-            type: 'get',
-            url: '_view/pages',
-            async: false,
-            success: function(data) {
-                var results = JSON.parse(data);
-                pages = results;
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                pageContent = "Error!";
-            }
-        });
+        var pages = viewpages;
 
         pages.rows.sort(function(a, b) {
             var dateA = Date.parse(a.value.edited_on);
@@ -74,14 +70,17 @@ function maketapirwikiparseandreplace() {
         });
 
 
-        var html = "Title | Last edited on | By\n---|---|---\n";
-        var recentPages = 5;
-        if (pages.rows.lenght < recentPages) {
-            recentPages = pages.rows.length;
-        }
-        for (var x = 0; x < recentPages; x++) {
-            var p = pages.rows[x];
-            html += "[" + p.id + "](#" + p.id + ") | " + p.value.edited_on + " | " + p.value.edited_by + "\n";
+        var html = "";
+        if (pages.total_rows > 0) {
+            html += "Title | Last edited on | By\n---|---|---\n";
+            var recentPages = 5;
+            if (pages.rows.lenght < recentPages) {
+                recentPages = pages.rows.length;
+            }
+            for (var x = 0; x < recentPages; x++) {
+                var p = pages.rows[x];
+                html += "[" + p.id + "](#" + p.id + ") | " + p.value.edited_on + " | " + p.value.edited_by + "\n";
+            }
         }
         return html;
     }
@@ -90,27 +89,16 @@ function maketapirwikiparseandreplace() {
 
     function topicList(title) {
         //console.log('topicList(' + title + ')');
-        var pages;
+        var pages = viewpages;
 
-        $.ajax({
-            type: 'get',
-            url: '_view/pages',
-            async: false,
-            success: function(data) {
-                var results = JSON.parse(data);
-                pages = results;
-            },
-
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                pageContent = "INCLUDE ERROR: [" + id + "](#" + id + ") does not exist yet...";
-            }
-        });
-
-        var html = "Title | Last edited on | By\n---|---|---\n";
-        for (var x = 0; x < pages.total_rows; x++) {
-            var p = pages.rows[x];
-            if (p.id.substring(title.length, 0) == title) {
-                html += "[" + p.id + "](#" + p.id + ") | " + p.value.edited_on + " | " + p.value.edited_by + "\n";
+        var html = "";
+        if (pages.total_rows > 0) {
+            html += "Title | Last edited on | By\n---|---|---\n";
+            for (var x = 0; x < pages.total_rows; x++) {
+                var p = pages.rows[x];
+                if (p.id.substring(title.length, 0) == title) {
+                    html += "[" + p.id + "](#" + p.id + ") | " + p.value.edited_on + " | " + p.value.edited_by + "\n";
+                }
             }
         }
         return html;
@@ -138,6 +126,7 @@ function maketapirwikiparseandreplace() {
 
 
     function parseandreplace(text) {
+        refreshViewPages();
         text = text.replace(tokens.indexMacro.re, tokens.indexMacro.sub());
         var topicMatches = text.match(tokens.topicMacro.re);
         //console.log(topicMatches);
