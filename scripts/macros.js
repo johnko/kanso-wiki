@@ -3,7 +3,7 @@ function maketapirwikiparseandreplace() {
     var pageContent = "";
 
     function includePage(id) {
-        console.log('includePage(' + id + ')');
+        //console.log('includePage(' + id + ')');
         $.ajax({
             type: 'get',
             url: '../../' + id,
