@@ -26,7 +26,7 @@ function maketapirwikiparseandreplace() {
 
         $.ajax({
             type: 'get',
-            url: '_view/titles',
+            url: '_view/pages',
             async: false,
             success: function(data) {
                 var results = JSON.parse(data);
@@ -52,7 +52,7 @@ function maketapirwikiparseandreplace() {
 
         $.ajax({
             type: 'get',
-            url: '_view/titles',
+            url: '_view/pages',
             async: false,
             success: function(data) {
                 var results = JSON.parse(data);
@@ -94,7 +94,7 @@ function maketapirwikiparseandreplace() {
 
         $.ajax({
             type: 'get',
-            url: '_view/titles',
+            url: '_view/pages',
             async: false,
             success: function(data) {
                 var results = JSON.parse(data);

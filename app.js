@@ -1,5 +1,5 @@
 exports.views = {
-    titles: {
+    pages: {
         map: function(doc) {
             if (doc.type == 'page') {
                 emit(null, {

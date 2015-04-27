@@ -181,7 +181,7 @@ wiki.edit = function() {
         var pages;
         $.ajax({
             type: 'get',
-            url: '_view/titles',
+            url: '_view/pages',
             async: false,
             success: function(data) {
                 var results = JSON.parse(data);
@@ -459,7 +459,7 @@ function index() {
 
     $.ajax({
         type: 'get',
-        url: '_view/titles',
+        url: '_view/pages',
         async: false,
         success: function(data) {
             var results = JSON.parse(data);
@@ -486,7 +486,7 @@ function recentChanges() {
 
     $.ajax({
         type: 'get',
-        url: '_view/titles',
+        url: '_view/pages',
         async: false,
         success: function(data) {
             var results = JSON.parse(data);
@@ -528,7 +528,7 @@ function topicList(title) {
 
     $.ajax({
         type: 'get',
-        url: '_view/titles',
+        url: '_view/pages',
         async: false,
         success: function(data) {
             var results = JSON.parse(data);
