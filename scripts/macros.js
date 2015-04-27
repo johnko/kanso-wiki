@@ -60,13 +60,14 @@ function maketapirwikiparseandreplace() {
         var pages = viewpages;
 
         pages.rows.sort(function(a, b) {
-            var dateA = Date.parse(a.value.edited_on);
-            var dateB = Date.parse(b.value.edited_on);
-            if (dateA < dateB) {
-                return 1;
-            } else {
-                return -1;
-            }
+            // reverse sort
+            var aw = (
+                a.value.edited_on === undefined
+            ) ? '' : a.value.edited_on.toLowerCase();
+            var bw = (
+                b.value.edited_on === undefined
+            ) ? '' : b.value.edited_on.toLowerCase();
+            return ((aw > bw) ? -1 : ((aw < bw) ? 1 : 0));
         });
 
 
