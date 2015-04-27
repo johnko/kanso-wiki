@@ -586,7 +586,9 @@ function topicList(title) {
 
 
 function getNavOffset() {
-    return $("#title").offset().top + $("#title").height() + 10;
+    // use .length to test if selector exists
+    if ($("#title").length) return $("#title").offset().top + $("#title").height() + 10;
+    else return 0;
 }
 
 function getDefaultHeight() {
