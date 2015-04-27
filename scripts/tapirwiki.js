@@ -568,6 +568,7 @@ $(document).ready(function() {
             },
             async: false,
             success: function(data2) {
+                $("#LoginPassword").val(''); // clear password
                 $("#LoginForm").hide();
                 $.ajax({
                     url: '../../../_session',
@@ -580,6 +581,7 @@ $(document).ready(function() {
                 });
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
+                $("#LoginPassword").val(''); // clear password
                 error("Ooooops!, request failed with status: " + XMLHttpRequest.status + ' ' + XMLHttpRequest.responseText);
             }
         });

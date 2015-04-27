@@ -8,6 +8,8 @@ body {
 }
 #LoginForm {
     display: none;
+    margin-top: 10px!important;
+    margin-bottom: 0!important;
 }
 #page-menu {
     float: right!important;
