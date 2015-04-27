@@ -38,6 +38,7 @@ body {
         display: block;
         width: 49%;
         float: right;
+        min-height: 400px;
     }
 }
 /*

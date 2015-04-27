@@ -187,14 +187,12 @@ wiki.open = function(id) {
 wiki.edit = function() {
     $.tapirWiki.pageChangeReset(this._id);
     $("#inner-content").html("");
-    $("<h2>" + this._id + "</h2>");
 
     var form = $("<form id='addNote'></form>").hide().appendTo("#inner-content").fadeIn("slow");
-    $('<div id="md-preview"></div>').appendTo("#content");
 
     if (wiki._rev) {
         //if there is a revision, it is an existing page and the title should be displayed read only
-        $("<h1 id='title'>" + this._id + "</h1>").appendTo(form);
+        $("<h1 id='title'> </h1>").appendTo(form);
     } else {
         //if no revision, it's a new page and we should let the user enter a page name
         $("#pageTitle").html("New page");
@@ -250,9 +248,9 @@ wiki.edit = function() {
         }
 
     }
-    $("#md-preview").html('<h1>Live Preview</h1>' + convert(this.body));
+    $("#md-preview").html(convert(this.body));
     $("<textarea id='body'>" + this.body + "</textarea>").on('mouseup keyup', function(e) {
-        $("#md-preview").html('<h1>Live Preview</h1>' + convert($("#body").val()));
+        $("#md-preview").html(convert($("#body").val()));
     }).appendTo(form);
 
 
@@ -587,7 +585,7 @@ function topicList(title) {
 
 
 function getNavOffset() {
-    return $("#title").position().top + $("#title").height();
+    return $("#title").position().top + $("#title").height() + 10;
 }
 
 function getDefaultHeight() {
@@ -606,7 +604,7 @@ $(document).ready(function() {
         if (window.scrollY > getNavOffset()) {
             $("#body").attr('style', 'top:10px;' + getWindowHeight());
         } else {
-            $("#body").attr('style', 'top:' + getNavOffset() - window.scrollY + 'px;' + getDefaultHeight());
+            $("#body").attr('style', 'top:' + getNavOffset() + 'px;' + getDefaultHeight());
         }
     });
 
