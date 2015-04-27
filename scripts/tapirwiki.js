@@ -586,7 +586,7 @@ function topicList(title) {
 
 
 function getNavOffset() {
-    return $("#title").position().top + $("#title").height() + 10;
+    return $("#title").offset().top + $("#title").height() + 10;
 }
 
 function getDefaultHeight() {
