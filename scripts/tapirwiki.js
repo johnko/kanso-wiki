@@ -33,6 +33,28 @@ String.prototype.toCamelCase = function() {
         });
 };
 
+function timeLongFormatDate(timeString) {
+        var localdate = new Date(Date.parse(timeString));
+        var year = localdate.getFullYear();
+        var month = (
+            localdate.getMonth() < 9
+        ) ? '0' + (localdate.getMonth() + 1) : (localdate.getMonth() + 1);
+        var day = (
+            localdate.getDate() < 10
+        ) ? '0' + localdate.getDate() : localdate.getDate();
+        return year + '-' + month + '-' + day;
+    }
+    /*============================================================================*/
+function timeLongFormatTime(timeString) {
+        var localdate = new Date(Date.parse(timeString));
+        return localdate.toLocaleTimeString();
+    }
+    /*============================================================================*/
+function timeLongFormat(timeString) {
+    return timeLongFormatDate(timeString) + ' ' +
+        timeLongFormatTime(timeString);
+}
+
 //Set some settings...
 var settings;
 
@@ -57,7 +79,7 @@ wiki.save = function() {
         error("Please enter a page title!");
     } else {
         wiki.body = $("#body").val();
-        wiki.edited_on = Date();
+        wiki.edited_on = timeLongFormat(Date().toString());
         wiki.edited_by = settings.defaultUserName;
 
         $.ajax({
