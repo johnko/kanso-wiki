@@ -47,7 +47,7 @@ function timeLongFormatDate(timeString) {
 
 function timeLongFormatTime(timeString) {
     var localdate = new Date(Date.parse(timeString));
-    return localdate.toTimeString()();
+    return localdate.toTimeString();
 }
 
 function timeLongFormat(timeString) {
