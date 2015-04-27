@@ -197,6 +197,7 @@ wiki.edit = function() {
         $("<h1 id='title'>" + this._id + "</h1>").appendTo(form);
     } else {
         //if no revision, it's a new page and we should let the user enter a page name
+        $("#pageTitle").html("New page");
 
         $("<h1><input id='title' type='text' value='" + this._id + "'/></h1>").appendTo(form);
         $("#title").focus();
@@ -257,7 +258,7 @@ wiki.edit = function() {
 
     $("#page-menu").html("");
     $('<li><a href="Javascript: wiki.save();">Save</a></li>').appendTo("#page-menu").fadeIn("slow");
-    $("#pageTitle").html("New page");
+
 };
 
 wiki.applyTemplate = function(id) {
@@ -585,10 +586,29 @@ function topicList(title) {
 }
 
 
+function getNavOffset() {
+    return $("#title").position().top + $("#title").height();
+}
+
+function getDefaultHeight() {
+    return 'height:' + (window.innerHeight - (getNavOffset() * 1.5)) + 'px;';
+}
+
+function getWindowHeight() {
+    return 'height:' + (window.innerHeight - ($("footer").height() * 3)) + 'px;';
+}
 
 //And finally...when the document is ready...
 
 $(document).ready(function() {
+
+    $(window).on('scroll', function() {
+        if (window.scrollY > getNavOffset()) {
+            $("#body").attr('style', 'top:10px;' + getWindowHeight());
+        } else {
+            $("#body").attr('style', 'top:' + getNavOffset() - window.scrollY + 'px;' + getDefaultHeight());
+        }
+    });
 
     $("#LoginButton").on('click', function() {
         $.ajax({

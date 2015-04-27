@@ -26,6 +26,10 @@ body {
     }
 }
 @media (min-width: 992px) {
+    textarea#body {
+        width: 47% !important;
+        position: fixed;
+    }
     #inner-content {
         width: 49%;
         float: left;
@@ -90,7 +94,7 @@ textarea {
     font-family: monospace;
     height: 300px;
     margin: 0;
-    width: 100%
+    width: 100%;
 }
 #userName {
     cursor: pointer;
