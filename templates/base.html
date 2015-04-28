@@ -4,42 +4,19 @@
 <head>
     <meta charset="UTF-8" />
 
-    <link rel="stylesheet" href="style/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="style/jquery.jgrowl.min.css" type="text/css">
-    <link rel="stylesheet" href="style/tapirwiki.css" type="text/css">
-
-    <!-- json2.js; add JSON if not exist; from https://github.com/douglascrockford/JSON-js -->
-    <script src="scripts/json2.js"></script>
-
-    <!-- jquery -->
-    <script src="scripts/jquery-1.11.2.min.js"></script>
-
-    <!-- jquery plugins; requires jquery -->
-    <script src="scripts/js.cookie-1.5.1.min.js"></script>
-    <script src="scripts/jquery.jgrowl.min.js"></script>
-
-    <!-- bootstrap.min.js; requires jquery -->
-    <script src="scripts/bootstrap.min.js"></script>
-
-    <!-- modules for markdown -->
-    <script src="modules.js"></script>
-
-    <!-- jquery.tapirwiki.js; detects hash changes; requires jquery -->
-    <script src="scripts/jquery.tapirwiki.js"></script>
-
-    <!-- macros; requires jquery -->
-    <script src="scripts/macros.js"></script>
-
-    <!-- tapirwiki.js; requires modules.js and macros.js -->
-    <script src="scripts/tapirwiki.js"></script>
-
     <title>TapirWiki</title>
+
+    <link rel="stylesheet" type="text/css" href="{baseURL}/static/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="{baseURL}/static/css/jquery.jgrowl.min.css" />
+    <link rel="stylesheet" type="text/css" href="{baseURL}/static/css/tapirwiki.css" />
+    <!--link rel="stylesheet" type="text/css" href="{baseURL}/kanso-topbar/topbar.css" /-->
+
 </head>
 
 <body>
     <div id="container">
         <div id="wrapper">
-            <nav class="navbar navbar-default">
+            <nav id="kanso-topbar" class="navbar navbar-default">
                 <div class="container-fluid">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -49,7 +26,7 @@
                             <span class="icon-bar"></span>
                         </button>
                         <!--a class="navbar-brand" href="#">Brand</a-->
-                        <a class="navbar-brand" href="./index.html">
+                        <a class="navbar-brand" href="./">
                             <span id="wikiName"></span>
                             :
                             <span id="pageTitle"></span>
@@ -60,14 +37,6 @@
                         <ul id="main-menu" class="nav navbar-nav">
                             <li class="hidden-xs nav-spacer"></li>
                         </ul>
-                        <p class="navbar-text navbar-right">
-                            <a id="userName" class="navbar-link" onclick="javascript: identify();"></a>
-                        </p>
-                        <p id="LoginForm" class="navbar-text navbar-right">
-                            <input id="LoginName" />
-                            <input id="LoginPassword" type="password" />
-                            <button id="LoginButton" class="btn btn-primary btn-sm">Login</button>
-                        </p>
                     </div>
                     <!-- /.navbar-collapse -->
                 </div>
@@ -84,6 +53,32 @@
             <p>Powered by <a href="https://github.com/johnko/tapirwiki">TapirWiki</a>.</p>
         </footer>
     </div>
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <!-- json2.js; add JSON if not exist; from https://github.com/douglascrockford/JSON-js -->
+    <script src="{baseURL}/static/js/json2.js"></script>
+
+    <!-- jquery -->
+    <script src="{baseURL}/static/js/jquery-1.11.2.min.js"></script>
+
+    <!-- jquery plugins; requires jquery -->
+    <script src="{baseURL}/static/js/js.cookie-1.5.1.min.js"></script>
+    <script src="{baseURL}/static/js/jquery.jgrowl.min.js"></script>
+
+    <!-- bootstrap.min.js; requires jquery -->
+    <script src="{baseURL}/static/js/bootstrap.min.js"></script>
+
+    <!-- jquery.tapirwiki.js; detects hash changes; requires jquery -->
+    <script src="{baseURL}/static/js/jquery.tapirwiki.js"></script>
+
+    <!-- modules for require -->
+    <script src="{baseURL}/modules.js"></script>
+
+    <!-- macros; requires jquery -->
+    <script src="{baseURL}/static/js/macros.js"></script>
+
+    <!-- tapirwiki.js; requires modules and macros.js -->
+    <script src="{baseURL}/static/js/tapirwiki.js"></script>
 </body>
 
 </html>

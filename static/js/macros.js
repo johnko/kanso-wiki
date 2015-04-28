@@ -9,7 +9,7 @@ function maketapirwikiparseandreplace() {
     function refreshViewPages() {
         $.ajax({
             type: 'get',
-            url: '_view/pages',
+            url: './_ddoc/_view/pages',
             async: false,
             success: function(data) {
                 var results = JSON.parse(data);
@@ -26,7 +26,7 @@ function maketapirwikiparseandreplace() {
         //console.log('includePage(' + id + ')');
         $.ajax({
             type: 'get',
-            url: '../../' + id,
+            url: './_db/' + id,
             async: false,
             success: function(data) {
                 var page = JSON.parse(data);

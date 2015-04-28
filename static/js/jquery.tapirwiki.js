@@ -113,7 +113,7 @@
     //  };
 
     function goPath(newPath) {
-        window.location = 'index.html#' + newPath;
+        window.location = '_rewrite#' + newPath;
         _lastPath = getPath();
     }
 

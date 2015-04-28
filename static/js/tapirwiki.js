@@ -3,7 +3,13 @@
   Original work: Joshua Knight
 */
 
+
+// redirect to _rewrite if we have no trailing slash
+if (window.location.href.match(/\/_rewrite$/) !== null) location.href += '/';
+
+
 // JV: make the functions needed for rendering
+
 var md = require('lib/markdown-it.min')({
         html: true,
         linkify: true,
@@ -18,6 +24,7 @@ var md = require('lib/markdown-it.min')({
     .use(require('lib/markdown-it-sub.min'))
     .use(require('lib/markdown-it-sup.min'));
 tapirparseandreplace = maketapirwikiparseandreplace();
+
 
 function convert(text) {
     return md.render(tapirparseandreplace(text));
@@ -88,7 +95,7 @@ wiki.save = function() {
         wiki.edited_by = settings.defaultUserName;
 
         $.ajax({
-            url: '../../../_session',
+            url: './_couchdb/_session',
             async: false,
             success: function(data) {
                 var response = JSON.parse(data);
@@ -98,7 +105,7 @@ wiki.save = function() {
 
         $.ajax({
             type: 'put',
-            url: '../../' + this._id,
+            url: './_db/' + this._id,
             data: JSON.stringify(this),
             async: false,
             success: function(data) {
@@ -127,7 +134,7 @@ wiki.display = function() {
     $('<li class="pageSpecific"><a href="Javascript: wiki.history()">History</a></li>').appendTo("#page-menu");
     $('<li class="pageSpecific"><a href="Javascript: wiki.attachments()">Attachments</a></li>').appendTo("#page-menu");
     $('<li class="pageSpecific"><a href="Javascript: wiki.remove()">Delete</a></li>').appendTo("#page-menu");
-    window.location = "index.html#" + this._id;
+    window.location = "#" + this._id;
     $.tapirWiki.pageChangeReset(this._id);
 };
 
@@ -146,7 +153,7 @@ wiki.remove = function() {
     if (confirm("Really delete this page?")) {
         $.ajax({
             type: 'delete',
-            url: '../../' + wiki._id + '?rev=' + wiki._rev,
+            url: './_db/' + wiki._id + '?rev=' + wiki._rev,
             success: function() {
                 $.jGrowl("Page has been deleted...", {
                     header: "Cool!"
@@ -165,7 +172,7 @@ wiki.open = function(id) {
     wiki.init();
     $.ajax({
         type: 'get',
-        url: '../../' + id + "?revs=true",
+        url: './_db/' + id + "?revs=true",
         success: function(data) {
             var page = JSON.parse(data);
             wiki._id = page._id;
@@ -209,7 +216,7 @@ wiki.edit = function() {
         var pages;
         $.ajax({
             type: 'get',
-            url: '_view/pages',
+            url: './_ddoc/_view/pages',
             async: false,
             success: function(data) {
                 var results = JSON.parse(data);
@@ -263,7 +270,7 @@ wiki.edit = function() {
 wiki.applyTemplate = function(id) {
     $.ajax({
         type: 'get',
-        url: '../../' + id,
+        url: './_db/' + id,
         success: function(data) {
             var template = JSON.parse(data);
             $("#body").val(template.body);
@@ -293,7 +300,7 @@ wiki.history = function() {
     for (var x in this._revisions.ids) {
         $.ajax({
             type: 'GET',
-            url: '../../' + this._id + '?rev=' + rev + '-' + this._revisions.ids[x],
+            url: './_db/' + this._id + '?rev=' + rev + '-' + this._revisions.ids[x],
             async: false,
             success: function(data) {
                 var page = JSON.parse(data);
@@ -309,14 +316,14 @@ wiki.history = function() {
     //get conflicts for the current page, tag any pages as a conflict so we can identify them as such later
     $.ajax({
         type: 'GET',
-        url: '../../' + this._id + '?conflicts=true',
+        url: './_db/' + this._id + '?conflicts=true',
         async: false,
         success: function(data) {
             var conflicts = JSON.parse(data);
             for (rev in conflicts._conflicts) {
                 $.ajax({
                     type: 'GET',
-                    url: '../../' + wiki._id + '?rev=' + conflicts._conflicts[rev],
+                    url: './_db/' + wiki._id + '?rev=' + conflicts._conflicts[rev],
                     async: false,
                     success: function(data) {
                         page = JSON.parse(data);
@@ -379,7 +386,7 @@ wiki.sync = function() {
     //replicate remote to local
     $.ajax({
         type: 'POST',
-        url: '/_replicate',
+        url: './_couchdb/_replicate',
         data: JSON.stringify(repA),
         success: function(data) {
             $('#page-body').html("Synchronisation complete!");
@@ -391,7 +398,7 @@ wiki.sync = function() {
     //and local to remote
     $.ajax({
         type: 'POST',
-        url: '/_replicate',
+        url: './_couchdb/_replicate',
         data: JSON.stringify(repB),
         success: function(data) {
             $('#page-body').html("Synchronisation complete!");
@@ -432,7 +439,7 @@ wiki.attachments = function() {
                         }
                     }
                 };
-                xhr.open("PUT", "../../" + wiki._id + "/" + file.name + "?rev=" + wiki._rev, true);
+                xhr.open("PUT", "_db/" + wiki._id + "/" + file.name + "?rev=" + wiki._rev, true);
                 //xhr.setRequestHeader("X_FILENAME", file.name);
                 xhr.send(file);
             }
@@ -440,26 +447,11 @@ wiki.attachments = function() {
     });
 
     for (f in wiki._attachments) {
-        $("<li><a href='../../" + wiki._id + "/" + f + "'>" + f + "</a></li>").appendTo("#attachment-list");
+        $("<li><a href='./_db/" + wiki._id + "/" + f + "'>" + f + "</a></li>").appendTo("#attachment-list");
     }
 };
 
 //Finally, some miscellaneous useful functions
-function identify() {
-    if ($("#userName").html().replace(" ", "").length < 1) {
-        $("#LoginForm").show();
-    } else {
-        $.ajax({
-            type: 'delete',
-            url: '../../../_session',
-            async: false,
-            success: function(data) {
-                $("#userName").html('');
-                $("#LoginForm").show();
-            }
-        });
-    }
-}
 
 function error(msg) {
     $.jGrowl(msg, {
@@ -468,121 +460,6 @@ function error(msg) {
 }
 
 var pageContent = "";
-
-function includePage(id) {
-    $.ajax({
-        type: 'get',
-        url: '../../' + id,
-        async: false,
-        success: function(data) {
-            var page = JSON.parse(data);
-            pageContent = convert(page.body);
-        },
-
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            pageContent = "***INCLUDE ERROR: <a href='Javascript: wiki.open(\"" + id + "\")'>" + id + "</a> does not exist yet...***";
-        }
-    });
-    return pageContent;
-}
-
-function index() {
-    var pages;
-
-    $.ajax({
-        type: 'get',
-        url: '_view/pages',
-        async: false,
-        success: function(data) {
-            var results = JSON.parse(data);
-            pages = results;
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            pageContent = "Error!";
-        }
-    });
-
-    var html = "<ul class='page-list'>";
-
-    for (var x = 0; x < pages.total_rows; x++) {
-        var p = pages.rows[x];
-        html += "<li><a href='#" + p.id + "' onClick='Javascript: wiki.open(\"" + p.id + "\")'>" + p.id + "</a> edited on " + p.value.edited_on + " by " + p.value.edited_by + "</li>";
-    }
-    html += "</ul>";
-    return html;
-}
-
-
-function recentChanges() {
-    var pages;
-
-    $.ajax({
-        type: 'get',
-        url: '_view/pages',
-        async: false,
-        success: function(data) {
-            var results = JSON.parse(data);
-            pages = results;
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            pageContent = "Error!";
-        }
-    });
-
-    pages.rows.sort(function(a, b) {
-        var dateA = Date.parse(a.value.edited_on);
-        var dateB = Date.parse(b.value.edited_on);
-        if (dateA < dateB) {
-            return 1;
-        } else {
-            return -1;
-        }
-    });
-
-
-    var html = "<ul class='page-list'>";
-    var recentPages = 5;
-    if (pages.rows.lenght < recentPages) {
-        recentPages = pages.rows.length;
-    }
-    for (var x = 0; x < recentPages; x++) {
-        var p = pages.rows[x];
-        html += "<li><a href='#" + p.id + "' onClick='Javascript: wiki.open(\"" + p.id + "\")'>" + p.id + "</a> edited on " + p.value.edited_on + " by " + p.value.edited_by + "</li>";
-    }
-    html += "</ul>";
-    return html;
-}
-
-
-
-function topicList(title) {
-    var pages;
-
-    $.ajax({
-        type: 'get',
-        url: '_view/pages',
-        async: false,
-        success: function(data) {
-            var results = JSON.parse(data);
-            pages = results;
-        },
-
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            pageContent = "***INCLUDE ERROR: <a href='Javascript: wiki.open(\"" + id + "\")'>" + id + "</a> does not exist yet...***";
-        }
-    });
-
-    var html = "<ul class='page-list'>";
-    for (var x = 0; x < pages.total_rows; x++) {
-        var p = pages.rows[x];
-        if (p.id.substring(title.length, 0) == title) {
-
-            html += "<li><a href='#" + p.id + "' onClick='Javascript: wiki.open(\"" + p.id + "\")'>" + p.id + "</a> edited on " + p.value.edited_on + " by " + p.value.edited_by + "</li>";
-        }
-    }
-    html += "</ul>";
-    return html;
-}
 
 
 function getNavOffset() {
@@ -603,6 +480,10 @@ function getWindowHeight() {
 
 $(document).ready(function() {
 
+    if (window.location.href.match(/\/_rewrite$/) !== null) location.href += '/';
+
+    require('kanso-topbar').init();
+
     $(window).on('scroll', function() {
         if (window.scrollY > getNavOffset()) {
             $("#body").attr('style', 'top:10px;' + getWindowHeight());
@@ -611,39 +492,10 @@ $(document).ready(function() {
         }
     });
 
-    $("#LoginButton").on('click', function() {
-        $.ajax({
-            type: 'post',
-            url: '../../../_session',
-            data: {
-                'name': $("#LoginName").val(),
-                'password': $("#LoginPassword").val()
-            },
-            async: false,
-            success: function(data2) {
-                $("#LoginPassword").val(''); // clear password
-                $("#LoginForm").hide();
-                $.ajax({
-                    url: '../../../_session',
-                    async: false,
-                    success: function(data) {
-                        var response = JSON.parse(data);
-                        if (response.userCtx.name !== null) $("#userName").html('Signed in as ' + response.userCtx.name);
-                        else $("#LoginForm").show();
-                    }
-                });
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                $("#LoginPassword").val(''); // clear password
-                error("Ooooops!, request failed with status: " + XMLHttpRequest.status + ' ' + XMLHttpRequest.responseText);
-            }
-        });
-    });
-
     //To start, we need the settings for the wiki...
     $.ajax({
         type: 'get',
-        url: '../../TAPIRWIKISETTINGS',
+        url: './_db/TAPIRWIKISETTINGS',
         async: false,
         success: function(data) {
             var result = JSON.parse(data);
@@ -673,17 +525,6 @@ $(document).ready(function() {
             //Now let's open the page
             wiki.open(requestedPage);
 
-            //And now, set the user name.
-            var userName = settings.defaultUserName;
-            $.ajax({
-                url: '../../../_session',
-                async: false,
-                success: function(data) {
-                    var response = JSON.parse(data);
-                    if (response.userCtx.name !== null) $("#userName").html('Signed in as ' + response.userCtx.name);
-                    else $("#LoginForm").show();
-                }
-            });
 
         },
 
@@ -694,14 +535,14 @@ $(document).ready(function() {
                 $("#container").html("<h1>Installing TapirWiki</h1><p>Before you use TapirWiki for the first time, a few default pages need to be loaded:</p><ul id='install-log'></ul><div id='install-result'></div>");
                 $.ajax({
                     type: 'GET',
-                    url: '_show/systempages/_design%2Ftapirwiki',
+                    url: './_ddoc/_show/systempages/_design%2Ftapirwiki',
                     async: false,
                     success: function(data) {
                         var pages = JSON.parse(data);
                         for (p in pages) {
                             pop(pages[p]);
                         }
-                        $("#install-result").html("<h2>Installation complete</h2><p>Congratulations, TapirWiki has been set up correctly. Please refresh this page to access your new wiki or click <a href='./index.html'>here</a>.</p>");
+                        $("#install-result").html("<h2>Installation complete</h2><p>Congratulations, TapirWiki has been set up correctly. Please refresh this page to access your new wiki or click <a href='./'>here</a>.</p>");
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         error("Ooooops!, request failed with status: " + XMLHttpRequest.status + ' ' + XMLHttpRequest.responseText);
@@ -715,7 +556,7 @@ $(document).ready(function() {
 function pop(obj) {
     $.ajax({
         type: 'put',
-        url: '../../' + obj._id,
+        url: './_db/' + obj._id,
         data: JSON.stringify(obj),
         success: function(data) {
             $("#install-log").append("<li>" + obj._id + " loaded...</li>");

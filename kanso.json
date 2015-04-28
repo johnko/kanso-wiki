@@ -1,13 +1,27 @@
 {
     "name": "tapirwiki",
-    "version": "0.7.8",
+    "version": "0.8.0",
     "description": "A Wiki on the Couch!",
-    "attachments": ["index.html", "scripts", "style"],
-    "load": "app",
-    "modules": ["app.js", "lib"],
+    "attachments": "static",
+    "dust": {
+        "templates": "templates"
+    },
+    "duality": {
+        "base_template": "base.html"
+    },
+    "load": "lib/app",
+    "modules": ["lib"],
     "dependencies": {
         "attachments": null,
         "modules": null,
-        "properties": null
+        "properties": null,
+        "couchtypes": null,
+        "settings": null,
+        "duality": null,
+        "dust": null,
+        "duality-dust": null,
+        "kanso-topbar": null,
+        "users": null,
+        "session": null
     }
 }
