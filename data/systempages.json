@@ -1,4 +1,13 @@
 [{
+    "_id": "TAPIRWIKISETTINGS",
+    "defaultPage": "FrontPage",
+    "edited_by": "Nobody",
+    "wikiName": "TapirWiki",
+    "replicationEnabled": false,
+    "mainMenu": ["FrontPage", "Index", "NewPage", "Help"],
+    "replicationEndPoint": "http://hostname:5984/dbname",
+    "defaultUserName": "Anon."
+}, {
     "_id": "FrontPage",
     "body": "## Welcome to your new wiki! :)\n\nWell done, it looks like your new wiki is up and running. This is the first page which users will see when coming to the wiki, unless they follow a link to a specific page. The wiki is a quick and simple way of sharing information between people.\n\n## Features\n\nWith your new wiki you can:\n* Easily add pages to store notes or any information\n* Anyone can edit pages so the information is easier to maintain\n* use the simple formatting to decorate your text whilst focusing on the content\n* Make use of !CouchDB features such as replication to allow users to take the wiki offline\n* Use macros to list and include page content\n* Create page templates to provide a quick starting point for new pages (any page with a name starting with !PageTemplate will become a template!) \n* You can view previous versions of a page using the history button (up at the top, on the right).\n* Upload files / attachments for a page. For example, you can upload a picture for your page.\n* Use Markdown!\n\n## Recent changes\n\nHere's what's new for this wiki.\n{recentChanges}\n\n{include:HelpOnGettingStarted}\n\n## Need more help?\n\nYou can get more help here [Help](#Help)",
     "edited_on": "2015-04-26 21:27:28 GMT-0400 (EDT)",
@@ -47,12 +56,15 @@
     "edited_by": "Anon.",
     "type": "page"
 }, {
-    "defaultPage": "FrontPage",
-    "edited_by": "Nobody",
-    "wikiName": "TapirWiki",
-    "replicationEnabled": false,
-    "mainMenu": ["FrontPage", "Index", "NewPage", "Help"],
-    "replicationEndPoint": "http://hostname:5984/dbname",
-    "defaultUserName": "Anon.",
-    "_id": "TAPIRWIKISETTINGS"
+    "_id": "CouchDBKanso",
+    "body": "## CouchDB Kanso\n\nDeployment of johnko's Kanso apps 8-)\n\n### 1. Install dependencies\n\n1. Download and install `couchdb` from http://couchdb.apache.org/\n\n2. Download and install `node` from https://nodejs.org\n\n3. Then to install `kanso`, run:\n\n```\nnpm install kanso\n```\n\n### 2. Clone the code\n\nUsing `git`:\n\n```\ngit clone https://github.com/johnko/kanso-example.git\ngit clone https://github.com/johnko/manage_couchdb.git\ngit clone https://github.com/johnko/tapirwiki.git\n```\n\n### 3. Script the install\n\nYou can change `personal` to another database name:\n\n```\n#!/bin/sh\n\nBASEDIR=`pwd`\n\nDBNAME=personal\nDBURL=http://localhost:5984/${DBNAME}\n\ncd ${BASEDIR}/kanso-example\nkanso install\nkanso transform add-ids data/example.json data/example-with-ids.json\nkanso upload data/example-with-ids.json ${DBURL}\nkanso push ${DBURL}\n\ncd ${BASEDIR}/manage_couchdb/js\nkanso install\nkanso push ${DBURL}\n\ncd ${BASEDIR}/tapirwiki\nkanso install\nkanso upload data ${DBURL}\nkanso push ${DBURL}\n\ncd ${BASEDIR}\n```",
+    "edited_by": "Anon.",
+    "edited_on": "2015-04-26 22:05:51 GMT-0400 (EDT)",
+    "type": "page"
+}, {
+    "_id": "CouchDB",
+    "body": "## CouchDB\n### Location of Server Config File\n\nOn Mac OS X:\n```\n~/Applications/Apache\\ CouchDB.app/Contents/Resources/couchdbx-core/etc/couchdb/local.ini\n```\n\nOn FreeBSD:\n```\n/usr/local/etc/couchdb/local.ini\n```\n\n### Configure Attachment Compression\n\nIf you're running on ZFS and have ZFS compression on, add the following to disable the CouchDB compression to save CPU cycles:\n```\n[attachments]\ncompression_level = 0\n```\n\nSource: http://docs.couchdb.org/en/1.6.1/config/misc.html#configuration-of-attachment-storage\n\n### Disable Secure Rewrites\n\nTo allow for rewrites like `../../..`\n\n```\n[httpd]\nsecure_rewrites\t= false\n```\n\n{include:CouchDBKanso}",
+    "edited_by": "Anon.",
+    "edited_on": "2015-04-26 22:05:38 GMT-0400 (EDT)",
+    "type": "page"
 }]
