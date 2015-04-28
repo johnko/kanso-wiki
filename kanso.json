@@ -1,6 +1,6 @@
 {
     "name": "tapirwiki",
-    "version": "0.8.0",
+    "version": "0.8.1",
     "description": "A Wiki on the Couch!",
     "attachments": "static",
     "dust": {
