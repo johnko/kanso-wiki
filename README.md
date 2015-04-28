@@ -1,6 +1,6 @@
 # TapirWiki (ported from CouchApp to Kanso)
 
-This port URL: https://github.com/johnko/tapirwiki
+This port URL: https://github.com/johnko/kanso-wiki
 
 Original source: https://code.google.com/p/tapirwiki
 
@@ -12,7 +12,7 @@ sh deploy.sh
 
 The app will be deployed to:
 
-http://localhost:5984/tapirwiki/_design/tapirwiki/index.html
+http://localhost:5984/tapirwiki/_design/wiki/index.html
 
 ## Development
 
