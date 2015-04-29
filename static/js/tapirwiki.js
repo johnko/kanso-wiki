@@ -531,7 +531,7 @@ $(document).ready(function() {
                 $("#container").html("<h1>Installing TapirWiki</h1><p>Before you use TapirWiki for the first time, a few default pages need to be loaded:</p><ul id='install-log'></ul><div id='install-result'></div>");
                 $.ajax({
                     type: 'GET',
-                    url: './_ddoc/_show/systempages/_design%2Ftapirwiki',
+                    url: './_ddoc/_show/systempages/_design%2Fwiki',
                     async: false,
                     success: function(data) {
                         var pages = JSON.parse(data);
@@ -558,7 +558,7 @@ function pop(obj) {
             $("#install-log").append("<li>" + obj._id + " loaded...</li>");
         },
         error: function(data) {
-            $("#install-log").append("<li style='color:#f00'>" + obj._id + " failed. Please delete this database and try again. If the problem persists, please log an issue <a href='http://code.google.com/p/tapirwiki/'>here</a>.</li>");
+            $("#install-log").append('<li style="color:#f00">' + obj._id + ' failed. Please delete this database and try again. If the problem persists, please log an issue <a href="https://github.com/johnko/kanso-wiki/issues">here</a>.</li>');
         }
     });
 
