@@ -135,8 +135,10 @@ body {
         right: 0;
     }
     .username {
-        margin-left: 15px;
-        margin-right: 15px;
+        display: block;
+        position: absolute;
+        top: 1em;
+        right: 6em;
     }
     #kanso-topbar-session ul {
         display: inline-block;
@@ -160,6 +162,12 @@ body {
         position: absolute;
         top: 0.5em;
         right: 1em;
+    }
+    .username {
+        display: block;
+        position: absolute;
+        top: 1em;
+        right: 7em;
     }
 }
 
@@ -187,6 +195,12 @@ body {
         position: absolute;
         top: 0.5em;
         right: 1em;
+    }
+    .username {
+        display: block;
+        position: absolute;
+        top: 1em;
+        right: 7em;
     }
     textarea#body {
         width: 47% !important;
