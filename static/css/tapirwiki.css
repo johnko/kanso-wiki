@@ -2,220 +2,8 @@ body {
     margin: 1em;
 }
 
-.kanso-topbar-home-icon {
-    display: none;
-}
-
-.kanso-topbar-field {
-    margin-bottom: 10px;
-}
-
-.kanso-topbar-login a, .kanso-topbar-logout a, #kanso-topbar-login-login, #kanso-topbar-login-cancel {
-    /*btn*/
-    
-    display: inline-block;
-    padding: 6px 12px;
-    margin-bottom: 0;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.42857;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    cursor: pointer;
-    -moz-user-select: none;
-    background-image: none;
-    border: 1px solid transparent;
-    border-radius: 4px;
-}
-
-#kanso-topbar-login-login, #kanso-topbar-login-cancel {
-    /*btn-sm*/
-    
-    padding: 5px 10px!important;
-    font-size: 12px;
-    line-height: 1.5;
-    border-radius: 3px;
-}
-
-.kanso-topbar-login a, #kanso-topbar-login-login {
-    /*btn-primary*/
-    
-    color: #FFF!important;
-    background-color: #337AB7;
-    border-color: #2E6DA4;
-}
-
-.kanso-topbar-logout a, #kanso-topbar-login-cancel {
-    /*btn-danger*/
-    
-    color: #FFF!important;
-    background-color: #D9534F;
-    border-color: #D43F3A;
-}
-
-#kanso-topbar-login-cancel {
-    float: right;
-}
-
-.nav-spacer {
-    display: block;
-    width: 50px;
-    height: 1px;
-}
-
 #content input {
     width: 100%;
-}
-
-@media (max-width: 600px) {
-    #kanso-topbar-session {
-        padding-top: 15px;
-        padding-bottom: 15px;
-    }
-    .kanso-topbar-login {
-        display: block;
-        margin-left: 15px;
-        margin-right: 15px;
-    }
-    #kanso-topbar-login-dropdown {
-        border: 1px solid transparent;
-        border-radius: 4px;
-        background: #F8F8F8;
-        border-color: #E7E7E7;
-        position: relative;
-        left: 10px;
-        top: -50px;
-        padding: 10px;
-        float: left;
-    }
-    .username {
-        margin-left: 15px;
-        margin-right: 15px;
-    }
-    #kanso-topbar-session ul {
-        display: inline;
-        padding: 0;
-    }
-    .kanso-topbar-logout {
-        display: inline-block;
-    }
-}
-
-@media (min-width: 601px) {
-    #kanso-topbar-login-dropdown {
-        border: 1px solid transparent;
-        border-radius: 4px;
-        background: #F8F8F8;
-        border-color: #E7E7E7;
-        position: absolute;
-        right: -1px;
-        top: -1px;
-        padding: 10px;
-    }
-    .kanso-topbar-login a, .kanso-topbar-logout a {
-        float: right;
-    }
-}
-
-@media (min-width: 601px) and (max-width: 767px) {
-    #kanso-topbar-session {
-        position: absolute;
-        right: 0;
-        padding-top: 15px;
-        padding-bottom: 15px;
-        z-index: 1;
-        padding-right: 5em;
-        top: inherit;
-    }
-    .kanso-topbar-login, .kanso-topbar-logout {
-        display: block;
-        position: absolute;
-        top: 1em;
-        right: 0;
-    }
-    .username {
-        display: block;
-        position: absolute;
-        top: 1.5em;
-        right: 6em;
-    }
-    #kanso-topbar-session ul {
-        display: inline-block;
-        padding: 0;
-        margin: 0;
-    }
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-    #kanso-topbar-session {
-        position: absolute;
-        right: 0;
-        padding-top: 15px;
-        padding-bottom: 15px;
-        z-index: 1;
-        padding-right: 5em;
-        top: 0;
-    }
-    .kanso-topbar-login, .kanso-topbar-logout {
-        display: block;
-        position: absolute;
-        top: 0.5em;
-        right: 1em;
-    }
-    .username {
-        display: block;
-        position: absolute;
-        top: 1em;
-        right: 7em;
-    }
-}
-
-@media (max-width: 991px) {
-    #inner-content {
-        width: inherit;
-    }
-    #md-preview {
-        display: none;
-    }
-}
-
-@media (min-width: 992px) {
-    #kanso-topbar-session {
-        position: absolute;
-        right: 0;
-        padding-top: 15px;
-        padding-bottom: 15px;
-        z-index: 1;
-        padding-right: 5em;
-        top: 0;
-    }
-    .kanso-topbar-login, .kanso-topbar-logout {
-        display: block;
-        position: absolute;
-        top: 0.5em;
-        right: 1em;
-    }
-    .username {
-        display: block;
-        position: absolute;
-        top: 1em;
-        right: 7em;
-    }
-    textarea#body {
-        width: 47% !important;
-        position: fixed;
-    }
-    #inner-content {
-        width: 49%;
-        float: left;
-    }
-    #md-preview {
-        display: block;
-        width: 49%;
-        float: right;
-        min-height: 400px;
-    }
 }
 /*
 table from bootstrap because we can't set class in markdown
@@ -259,25 +47,25 @@ table>tbody>tr:nth-of-type(odd) {
     margin-left: 1em
 }
 
-div#content {
+#content {
     border-top: solid 1px #B3B3B3;
     clear: both;
     padding: 1em
 }
 
-label {
+#content label {
     float: left;
     margin-left: 0;
     margin-right: 1em;
     padding-left: 0;
 }
 
-input {
+#content input {
     font-family: arial, sans-serif;
     margin: 0;
 }
 
-textarea {
+#content textarea {
     border: solid 1px #ddd;
     font-family: monospace;
     height: 300px;
@@ -299,10 +87,4 @@ footer {
 
 .error {
     background-color: #00ff00
-}
-
-@media print {
-    #kanso-topbar {
-        display: none
-    }
 }
