@@ -1,6 +1,17 @@
+/*** GLOBAL ***/
+
 body {
     margin: 1em;
 }
+
+footer {
+    border-top: solid 1px #B3B3B3;
+    clear: both;
+    padding: 1em 0;
+    margin: 3em 0 0 0;
+    font-size: 0.6em;
+}
+/*** TapirWiki ***/
 
 #content input {
     width: 100%;
@@ -75,14 +86,6 @@ table>tbody>tr:nth-of-type(odd) {
 
 #upload-button {
     margin-top: 1em
-}
-
-footer {
-    border-top: solid 1px #B3B3B3;
-    clear: both;
-    padding: 1em 0;
-    margin: 3em 0 0 0;
-    font-size: 0.6em;
 }
 
 .error {
