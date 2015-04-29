@@ -131,13 +131,13 @@ body {
     .kanso-topbar-login, .kanso-topbar-logout {
         display: block;
         position: absolute;
-        top: 0.5em;
+        top: 1em;
         right: 0;
     }
     .username {
         display: block;
         position: absolute;
-        top: 1em;
+        top: 1.5em;
         right: 6em;
     }
     #kanso-topbar-session ul {
