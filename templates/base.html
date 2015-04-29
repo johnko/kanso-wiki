@@ -79,6 +79,12 @@
 
     <!-- tapirwiki.js; requires modules and macros.js -->
     <script src="{baseURL}/static/js/tapirwiki.js"></script>
+    <script>
+        // in case the above don't load
+        // redirect to _rewrite if we have no trailing slash
+        if (window.location.href.match(/\/_rewrite$/) !== null) location.href += '/';
+
+    </script>
 </body>
 
 </html>

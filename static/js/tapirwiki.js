@@ -4,10 +4,6 @@
 */
 
 
-// redirect to _rewrite if we have no trailing slash
-if (window.location.href.match(/\/_rewrite$/) !== null) location.href += '/';
-
-
 // JV: make the functions needed for rendering
 
 var md = require('lib/markdown-it.min')({
