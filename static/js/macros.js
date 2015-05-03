@@ -9,7 +9,7 @@ function maketapirwikiparseandreplace() {
     function refreshViewPages() {
         $.ajax({
             type: 'get',
-            url: './_ddoc/_view/pages',
+            url: './_ddoc/_view/pages?include_docs=true',
             async: false,
             success: function(data) {
                 var results = JSON.parse(data);
@@ -48,8 +48,8 @@ function maketapirwikiparseandreplace() {
         if (pages.total_rows > 0) {
             html += "Title | Last edited on | By\n---|---|---\n";
             for (var x = 0; x < pages.total_rows; x++) {
-                var p = pages.rows[x];
-                html += "[" + p.id + "](#" + p.id + ") | " + p.value.edited_on + " | " + p.value.edited_by + "\n";
+                var p = pages.rows[x].doc;
+                html += "[" + p._id + "](#" + p._id + ") | " + p.edited_on + " | " + p.edited_by + "\n";
             }
         }
         return html;
@@ -63,11 +63,11 @@ function maketapirwikiparseandreplace() {
         pages.rows.sort(function(a, b) {
             // reverse sort
             var aw = (
-                a.value.edited_on === undefined
-            ) ? '' : a.value.edited_on.toLowerCase();
+                a.doc.edited_on === undefined
+            ) ? '' : a.doc.edited_on.toLowerCase();
             var bw = (
-                b.value.edited_on === undefined
-            ) ? '' : b.value.edited_on.toLowerCase();
+                b.doc.edited_on === undefined
+            ) ? '' : b.doc.edited_on.toLowerCase();
             return ((aw > bw) ? -1 : ((aw < bw) ? 1 : 0));
         });
 
@@ -80,8 +80,8 @@ function maketapirwikiparseandreplace() {
                 recentPages = pages.rows.length;
             }
             for (var x = 0; x < recentPages; x++) {
-                var p = pages.rows[x];
-                html += "[" + p.id + "](#" + p.id + ") | " + p.value.edited_on + " | " + p.value.edited_by + "\n";
+                var p = pages.rows[x].doc;
+                html += "[" + p._id + "](#" + p._id + ") | " + p.edited_on + " | " + p.edited_by + "\n";
             }
         }
         return html;
@@ -97,9 +97,9 @@ function maketapirwikiparseandreplace() {
         if (pages.total_rows > 0) {
             html += "Title | Last edited on | By\n---|---|---\n";
             for (var x = 0; x < pages.total_rows; x++) {
-                var p = pages.rows[x];
-                if (p.id.substring(title.length, 0) == title) {
-                    html += "[" + p.id + "](#" + p.id + ") | " + p.value.edited_on + " | " + p.value.edited_by + "\n";
+                var p = pages.rows[x].doc;
+                if (p._id.substring(title.length, 0) == title) {
+                    html += "[" + p._id + "](#" + p._id + ") | " + p.edited_on + " | " + p.edited_by + "\n";
                 }
             }
         }

@@ -106,7 +106,7 @@ wiki.save = function() {
             async: false,
             success: function(data) {
                 var response = JSON.parse(data);
-                wiki._rev = response.rev;
+                wiki._rev = response._rev;
                 wiki.open(wiki._id);
                 $.jGrowl("Your page has been saved...", {
                     header: "Cool!"
@@ -212,7 +212,7 @@ wiki.edit = function() {
         var pages;
         $.ajax({
             type: 'get',
-            url: './_ddoc/_view/pages',
+            url: './_ddoc/_view/pages?include_docs=true',
             async: false,
             success: function(data) {
                 var results = JSON.parse(data);
@@ -240,9 +240,9 @@ wiki.edit = function() {
         var anyTemplates = false;
 
         for (var x = 0; x < pages.total_rows; x++) {
-            var template = pages.rows[x];
-            if (template.id.substring(12, 0) == "PageTemplate") {
-                $("<li><a onClick='Javascript: wiki.applyTemplate(\"" + template.id + "\")'>" + template.id.replace("PageTemplate", "") + "</a></li>").appendTo(templatesList);
+            var template = pages.rows[x].doc;
+            if (template._id.substring(12, 0) == "PageTemplate") {
+                $("<li><a onClick='Javascript: wiki.applyTemplate(\"" + template._id + "\")'>" + template._id.replace("PageTemplate", "") + "</a></li>").appendTo(templatesList);
                 anyTemplates = true;
             }
         }
@@ -361,7 +361,7 @@ wiki.history = function() {
 
         $('<li>' + event + ' on ' + oldPages[page].edited_on + ' by ' + oldPages[page].edited_by + ' <a class="btn btn-default" id="' + oldPages[page]._rev + '"> View</a></li>').appendTo('#history');
         $('#' + oldPages[page]._rev).click(function() {
-            wiki.body = wiki.previousVersions[this.id].body;
+            wiki.body = wiki.previousVersions[this._id].body;
             wiki.display();
         });
     }
