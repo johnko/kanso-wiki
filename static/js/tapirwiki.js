@@ -361,7 +361,7 @@ wiki.history = function() {
 
         $('<li>' + event + ' on ' + oldPages[page].edited_on + ' by ' + oldPages[page].edited_by + ' <a class="btn btn-default" id="' + oldPages[page]._rev + '"> View</a></li>').appendTo('#history');
         $('#' + oldPages[page]._rev).click(function() {
-            wiki.body = wiki.previousVersions[this._id].body;
+            wiki.body = wiki.previousVersions[this.id].body;
             wiki.display();
         });
     }
