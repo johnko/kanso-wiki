@@ -4,6 +4,8 @@ This port URL: https://github.com/johnko/kanso-wiki
 
 Original source: https://code.google.com/p/tapirwiki
 
+![](https://github.com/johnko/kanso-wiki/raw/master/screenshot.png)
+
 ## Deployment
 
 ```
