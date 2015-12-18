@@ -1,7 +1,13 @@
 #!/bin/sh
 
-DBNAME=tapirwiki
-DBURL=http://localhost:5984/${DBNAME}
+if [ "x" = "x$1" ]; then
+    HOST=localhost
+else
+    HOST=$1
+fi
+
+DBNAME=wiki
+DBURL=http://${HOST}:5984/${DBNAME}
 
 kanso install
 
