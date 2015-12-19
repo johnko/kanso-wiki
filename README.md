@@ -14,7 +14,7 @@ sh deploy.sh
 
 The app will be deployed to:
 
-http://localhost:5984/tapirwiki/_design/wiki/index.html
+http://localhost:5984/wiki/_design/wiki/_rewrite/
 
 ## Development
 
