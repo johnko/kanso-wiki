@@ -16,6 +16,10 @@ The app will be deployed to:
 
 http://localhost:5984/wiki/_design/wiki/_rewrite/
 
+```
+You need to add the role "wikieditor" to the users that will be editors.
+```
+
 ## Development
 
 1. Install CouchDB http://couchdb.apache.org/
