@@ -108,7 +108,7 @@ wiki.save = function() {
                 var response = JSON.parse(data);
                 wiki._rev = response._rev;
                 wiki.open(wiki._id, null);
-                $.jGrowl("Your page has been saved...", {
+                $.jGrowl(wiki._id + " has been saved.", {
                     header: "Cool!"
                 });
             },
@@ -152,7 +152,7 @@ wiki.remove = function() {
             type: 'delete',
             url: './_db/' + wiki._id + '?rev=' + wiki._rev,
             success: function() {
-                $.jGrowl("Page has been deleted...", {
+                $.jGrowl(wiki._id + " has been deleted.", {
                     header: "Cool!"
                 });
                 $("#page-body").fadeOut("slow", wiki.open('FrontPage', null));
@@ -441,7 +441,7 @@ wiki.attachments = function() {
                         xhr.onreadystatechange = function(e) {
                             if (xhr.readyState == 4) {
                                 if (xhr.status == 201) {
-                                    $.jGrowl("Attachment was uploaded...", {
+                                    $.jGrowl(file.name + " was uploaded.", {
                                         header: "Cool!"
                                     });
                                 } else {
@@ -467,7 +467,7 @@ wiki.attachments = function() {
                     type: 'delete',
                     url: './_db/' + wiki._id + "/" + f + '?rev=' + wiki._rev,
                     success: function() {
-                        $.jGrowl(f + " has been deleted...", {
+                        $.jGrowl(f + " has been deleted.", {
                             header: "Cool!"
                         });
                         wiki.open(wiki._id, 'attachments');
