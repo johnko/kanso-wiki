@@ -535,10 +535,16 @@ $(document).ready(function() {
                     async: false,
                     success: function(data) {
                         var pages = JSON.parse(data);
+                        var result = true;
                         for (p in pages) {
-                            pop(pages[p]);
+                            if (result == true) {
+                                // continue
+                                result = pop(pages[p]);
+                            }
                         }
-                        $("#install-result").html("<h2>Installation complete</h2><p>Congratulations, TapirWiki has been set up correctly. Please refresh this page to access your new wiki or click <a href='./'>here</a>.</p>");
+                        if (result == true) {
+                            $("#install-result").html("<h2>Installation complete</h2><p>Congratulations, TapirWiki has been set up correctly. Please refresh this page to access your new wiki or click <a href='./'>here</a>.</p>");
+                        }
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         error("Ooooops!, request failed with status: " + XMLHttpRequest.status + ' ' + XMLHttpRequest.responseText);
@@ -550,18 +556,22 @@ $(document).ready(function() {
 });
 
 function pop(obj) {
+    var result = false;
     $.ajax({
         type: 'put',
         url: './_db/' + obj._id,
+        async: false,
         data: JSON.stringify(obj),
         success: function(data) {
             $("#install-log").append("<li>" + obj._id + " loaded...</li>");
+            result = true;
         },
-        error: function(data) {
-            $("#install-log").append('<li style="color:#f00">' + obj._id + ' failed. Please delete this database and try again. If the problem persists, please log an issue <a href="https://github.com/johnko/kanso-wiki/issues">here</a>.</li>');
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            error("Ooooops!, request failed with status: " + XMLHttpRequest.status + ' ' + XMLHttpRequest.responseText);
+            $("#install-log").append('<li style="color:#f00">' + obj._id + ' failed. Please add the role "wikieditor" to your user, delete this database and try again. If the problem persists, please log an issue <a href="https://github.com/johnko/kanso-wiki/issues">here</a>.</li>');
         }
     });
-
+    return result;
 }
 
 
