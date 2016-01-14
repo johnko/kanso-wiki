@@ -107,7 +107,7 @@ wiki.save = function() {
             success: function(data) {
                 var response = JSON.parse(data);
                 wiki._rev = response._rev;
-                wiki.open(wiki._id);
+                wiki.open(wiki._id, null);
                 $.jGrowl("Your page has been saved...", {
                     header: "Cool!"
                 });
@@ -155,7 +155,7 @@ wiki.remove = function() {
                 $.jGrowl("Page has been deleted...", {
                     header: "Cool!"
                 });
-                $("#page-body").fadeOut("slow", wiki.open('FrontPage'));
+                $("#page-body").fadeOut("slow", wiki.open('FrontPage', null));
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
                 error("Ooooops!, request failed with status: " + XMLHttpRequest.status + ' ' + XMLHttpRequest.responseText);
@@ -165,7 +165,7 @@ wiki.remove = function() {
 };
 
 
-wiki.open = function(id) {
+wiki.open = function(id, jump) {
     wiki.init();
     $.ajax({
         type: 'get',
@@ -180,6 +180,9 @@ wiki.open = function(id) {
             wiki.edited_by = page.edited_by;
             wiki._attachments = page._attachments;
             wiki.display();
+            if (jump == 'attachments') {
+                wiki.attachments();
+            }
         },
 
         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -413,7 +416,7 @@ wiki.load = function() {
     //I'm pretty sure this is horrible...need to wait for the location to be updated before opening the page
     setTimeout(function() {
         var requestedPage = location.hash.substring(1);
-        wiki.open(requestedPage);
+        wiki.open(requestedPage, null);
     }, 200);
 };
 
@@ -430,7 +433,7 @@ wiki.attachments = function() {
                 xhr.onreadystatechange = function(e) {
                     if (xhr.readyState == 4) {
                         if (xhr.status == 201) {
-                            wiki.open(wiki._id);
+                            wiki.open(wiki._id, 'attachments');
                             $.jGrowl("Attachment was uploaded...", {
                                 header: "Cool!"
                             });
@@ -447,7 +450,26 @@ wiki.attachments = function() {
     });
 
     for (f in wiki._attachments) {
-        $("<li><a href='./_db/" + wiki._id + "/" + f + "'>" + f + "</a></li>").appendTo("#attachment-list");
+        var delfilebtn = $("<button class='btn btn-danger btn-xs btn-delete'>Delete</button>").click(function(e){
+            if (confirm("Really delete " + f + "?")) {
+                $.ajax({
+                    type: 'delete',
+                    url: './_db/' + wiki._id + "/" + f + '?rev=' + wiki._rev,
+                    success: function() {
+                        $.jGrowl(f + " has been deleted...", {
+                            header: "Cool!"
+                        });
+                        wiki.open(wiki._id, 'attachments');
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        error("Ooooops!, request failed with status: " + XMLHttpRequest.status + ' ' + XMLHttpRequest.responseText);
+                    }
+                });
+            }
+        });
+        var fileitem = $("<li class='attachment-item'><a href='./_db/" + wiki._id + "/" + f + "'>" + f + "</a></li>");
+        delfilebtn.appendTo(fileitem);
+        fileitem.appendTo("#attachment-list");
     }
 };
 
@@ -500,7 +522,7 @@ $(document).ready(function() {
             //And get the menu items
             for (item in settings.mainMenu) {
                 var m = settings.mainMenu[item];
-                $("<li><a href='#" + m + "' onClick='Javascript: wiki.open(\"" + m + "\")'>" + m + "</a></li>").appendTo("#main-menu");
+                $("<li><a href='#" + m + "' onClick='Javascript: wiki.open(\"" + m + "\", null)'>" + m + "</a></li>").appendTo("#main-menu");
             }
 
             //and if replication is enabled show the sync menu item
@@ -513,10 +535,9 @@ $(document).ready(function() {
                 //If it's blank, lets get it from settings
                 requestedPage = settings.defaultPage;
             }
-            // JV: set it as the base page for pathfinder
 
             //Now let's open the page
-            wiki.open(requestedPage);
+            wiki.open(requestedPage, null);
 
         },
 
@@ -577,8 +598,3 @@ function pop(obj) {
     });
     return result;
 }
-
-
-//JV trial
-// $(document).bind("openwiki", function (e, params) { wiki.open(params.id);}); this is nonsense we don't want a click event
-//$(document).pathbinder(wiki.open,":id");
