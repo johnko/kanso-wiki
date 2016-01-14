@@ -424,29 +424,40 @@ wiki.load = function() {
 wiki.attachments = function() {
     $('#page-body').html('<h2>Attachments</h2><ul id="attachment-list"></ul><div id="upload-form-holder"></div>').hide().fadeIn("slow");
 
-    $("<h3>New attachment</h3><input id='_attachments' type='file' name='_attachments'/><button class='btn btn-primary' id='upload-button'>Upload File</button>").appendTo('#page-body');
+    $("<h3>New attachment</h3><input id='_attachments' type='file' name='_attachments' multiple='multiple'/><button class='btn btn-primary' id='upload-button'>Upload File</button>").appendTo('#page-body');
 
     $("#upload-button").click(function() {
         $.each($('#_attachments')[0].files, function(index, file) {
             if (file instanceof Blob) {
-                var xhr = new XMLHttpRequest();
-                xhr.onreadystatechange = function(e) {
-                    if (xhr.readyState == 4) {
-                        if (xhr.status == 201) {
-                            wiki.open(wiki._id, 'attachments');
-                            $.jGrowl("Attachment was uploaded...", {
-                                header: "Cool!"
-                            });
-                        } else {
-                            error("Ooooops!, request failed with status: " + xhr.status + ' ' + xhr.responseText);
-                        }
+                $.ajax({
+                    type: 'get',
+                    url: './_db/' + wiki._id,
+                    async: false,
+                    success: function(data) {
+                        var page = JSON.parse(data);
+                        // get new rev if multi file upload
+                        wiki._rev = page._rev;
+                        var xhr = new XMLHttpRequest();
+                        xhr.onreadystatechange = function(e) {
+                            if (xhr.readyState == 4) {
+                                if (xhr.status == 201) {
+                                    $.jGrowl("Attachment was uploaded...", {
+                                        header: "Cool!"
+                                    });
+                                } else {
+                                    error("Ooooops!, request failed with status: " + xhr.status + ' ' + xhr.responseText);
+                                }
+                            }
+                        };
+                        xhr.open("PUT", "_db/" + wiki._id + "/" + file.name + "?rev=" + wiki._rev, false); //async=false
+                        //xhr.setRequestHeader("X_FILENAME", file.name);
+                        xhr.send(file);
                     }
-                };
-                xhr.open("PUT", "_db/" + wiki._id + "/" + file.name + "?rev=" + wiki._rev, true);
-                //xhr.setRequestHeader("X_FILENAME", file.name);
-                xhr.send(file);
+                });
             }
         });
+        // refresh attachment page only after all uploads complete
+        wiki.open(wiki._id, 'attachments');
     });
 
     for (f in wiki._attachments) {
