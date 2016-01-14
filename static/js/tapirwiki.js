@@ -263,6 +263,8 @@ wiki.edit = function() {
     $("#page-menu").html("");
     $('<li><a href="Javascript: wiki.save();">Save</a></li>').appendTo("#page-menu").fadeIn("slow");
 
+    resizeEditor();
+
 };
 
 wiki.applyTemplate = function(id) {
@@ -482,13 +484,7 @@ $(document).ready(function() {
 
     require('kanso-topbar').init();
 
-    $(window).on('scroll', function() {
-        if (window.scrollY > getNavOffset()) {
-            $("#body").attr('style', 'top:10px;' + getWindowHeight());
-        } else {
-            $("#body").attr('style', 'top:' + getNavOffset() + 'px;' + getDefaultHeight());
-        }
-    });
+    $(window).on('scroll', function(){resizeEditor();} );
 
     //To start, we need the settings for the wiki...
     $.ajax({
@@ -519,10 +515,8 @@ $(document).ready(function() {
             }
             // JV: set it as the base page for pathfinder
 
-
             //Now let's open the page
             wiki.open(requestedPage);
-
 
         },
 
@@ -556,6 +550,14 @@ $(document).ready(function() {
         }
     });
 });
+
+function resizeEditor(){
+    if (window.scrollY > getNavOffset()) {
+        $("#body").attr('style', 'top:10px;' + getWindowHeight());
+    } else {
+        $("#body").attr('style', 'top:' + getNavOffset() + 'px;' + getDefaultHeight());
+    }
+}
 
 function pop(obj) {
     var result = false;
