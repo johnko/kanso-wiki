@@ -131,6 +131,7 @@ wiki.display = function() {
     $('<li class="pageSpecific"><a href="Javascript: wiki.attachments()">Attachments</a></li>').appendTo("#page-menu");
     $('<li class="pageSpecific"><a href="Javascript: wiki.remove()">Delete</a></li>').appendTo("#page-menu");
     window.location = "#" + this._id;
+    document.title = $('#wikiName').html() + " : " + this._id;
     $.tapirWiki.pageChangeReset(this._id);
 };
 
@@ -200,6 +201,7 @@ wiki.edit = function() {
     } else {
         //if no revision, it's a new page and we should let the user enter a page name
         $("#pageTitle").html("New page");
+        document.title = $('#wikiName').html() + " : " + this._id;
 
         $("<h1><input id='title' type='text' /></h1>").appendTo(form);
         $("#title").focus();
